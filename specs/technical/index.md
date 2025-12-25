@@ -118,19 +118,26 @@ tags: ['technical', 'index']
 
 | Documento | Status | Última Atualização |
 |-----------|--------|-------------------|
-| index.md | ✅ Atualizado | 2024-12-24 |
-| project_charter.md | ✅ Atualizado | 2024-12-24 |
-| adr/*.md | ✅ Atualizado | 2024-12-24 |
-| CLAUDE.meta.md | ✅ Atualizado | 2024-12-24 |
-| CODEBASE_GUIDE.md | ✅ Atualizado | 2024-12-24 |
-| BUSINESS_LOGIC.md | ✅ Atualizado | 2024-12-24 |
-| API_SPECIFICATION.md | ✅ Atualizado | 2024-12-24 |
-| CONTRIBUTING.md | ✅ Atualizado | 2024-12-24 |
-| TROUBLESHOOTING.md | ✅ Atualizado | 2024-12-24 |
-| ARCHITECTURE_CHALLENGES.md | ✅ Atualizado | 2024-12-24 |
+| index.md | ✅ Atualizado | 2025-12-25 |
+| project_charter.md | ✅ Atualizado | 2025-12-25 |
+| adr/README.md | ✅ Atualizado | 2025-12-25 |
+| adr/001-clean-architecture.md | ✅ Atualizado | 2025-12-25 |
+| adr/002-celery-redis-migration.md | ✅ Atualizado | 2025-12-25 |
+| adr/003-mongodb-over-postgresql.md | ✅ Atualizado | 2025-12-25 |
+| adr/004-coprime-intervals.md | ✅ Atualizado | 2025-12-25 |
+| adr/005-adapter-pattern-exchanges.md | ✅ Atualizado | 2025-12-25 |
+| adr/006-agno-framework-ai.md | ✅ Atualizado | 2025-12-25 |
+| adr/007-trading-config-deprecated.md | ✅ Atualizado | 2025-12-25 |
+| CLAUDE.meta.md | ✅ Atualizado | 2025-12-25 |
+| CODEBASE_GUIDE.md | ✅ Atualizado | 2025-12-25 |
+| BUSINESS_LOGIC.md | ✅ Atualizado | 2025-12-25 |
+| API_SPECIFICATION.md | ✅ Atualizado | 2025-12-25 |
+| CONTRIBUTING.md | ✅ Atualizado | 2025-12-25 |
+| TROUBLESHOOTING.md | ✅ Atualizado | 2025-12-25 |
+| ARCHITECTURE_CHALLENGES.md | ✅ Atualizado | 2025-12-25 |
 
 ---
 
-**Última Atualização Geral**: 2024-12-24
-**Versão da Documentação**: 1.0
+**Última Atualização Geral**: 2025-12-25
+**Versão da Documentação**: 1.0.0
 **Baseado em**: Análise de código real + input da equipe

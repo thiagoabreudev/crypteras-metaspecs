@@ -22,8 +22,8 @@ tags: ['business', 'index']
 - Primeira versão versionada de index.md
 :::
 
-**Versão**: 1.0
-**Data**: 2024-12-24
+**Versão**: 1.0.0
+**Data**: 2025-12-25
 **Status**: Ativo
 
 ---
@@ -147,8 +147,6 @@ Documentação detalhada de todas as funcionalidades implementadas e suas regras
 - 2FA e OAuth2 Social Login
 - Trial de 7 dias e coupons de desconto
 
-### [Métricas do Produto](PRODUCT_METRICS.md)
-KPIs de adoção, qualidade, performance e sucesso do cliente.
 
 ---
 
@@ -157,15 +155,9 @@ KPIs de adoção, qualidade, performance e sucesso do cliente.
 ### [Panorama Competitivo](COMPETITIVE_LANDSCAPE.md) - v1.0.0
 Análise de concorrentes (3Commas, Cryptohopper, Bitsgap), forças/fraquezas e posicionamento.
 
-### [Tendências da Indústria](INDUSTRY_TRENDS.md)
-Evolução do mercado de trading automatizado, adoção de IA, regulação brasileira.
-
 ---
 
 ## Camada 4: Contexto Empresarial Operacional
-
-### [Processo de Vendas](SALES_PROCESS.md)
-Estratégia de aquisição, qualificação de leads, funil de conversão FREE → PRO → MAX.
 
 ### [Framework de Mensagens](MESSAGING_FRAMEWORK.md) - v1.0.0
 Voz da marca, mensagens centrais, proposições de valor por público.
@@ -180,7 +172,7 @@ Princípios de comunicação, tom amigável/casual, SLA de suporte (24h), estrat
 ### Para Equipes de Produto
 - Consulte [PRODUCT_STRATEGY.md](PRODUCT_STRATEGY.md) para entender prioridades
 - Use [features/](features/) para especificações detalhadas de recursos
-- Acompanhe [PRODUCT_METRICS.md](PRODUCT_METRICS.md) para KPIs de sucesso
+- Consulte [CUSTOMER_PERSONAS.md](CUSTOMER_PERSONAS.md) para entender perfil do usuário
 
 ### Para Equipes de Marketing/Vendas
 - Leia [MESSAGING_FRAMEWORK.md](MESSAGING_FRAMEWORK.md) para mensagens aprovadas
@@ -201,11 +193,38 @@ Princípios de comunicação, tom amigável/casual, SLA de suporte (24h), estrat
 
 ---
 
-## Versionamento
+## Versionamento e Status da Documentação
+
+| Documento | Status | Última Atualização |
+|-----------|--------|-------------------|
+| index.md | ✅ Atualizado | 2025-12-25 |
+| README.md | ✅ Atualizado | 2025-12-25 |
+| CUSTOMER_PERSONAS.md | ✅ Atualizado | 2025-12-25 |
+| CUSTOMER_JOURNEY.md | ✅ Atualizado | 2025-12-25 |
+| VOICE_OF_CUSTOMER.md | ✅ Atualizado | 2025-12-25 |
+| PRODUCT_STRATEGY.md | ✅ Atualizado | 2025-12-25 |
+| COMPETITIVE_LANDSCAPE.md | ✅ Atualizado | 2025-12-25 |
+| MESSAGING_FRAMEWORK.md | ✅ Atualizado | 2025-12-25 |
+| CUSTOMER_COMMUNICATION.md | ✅ Atualizado | 2025-12-25 |
+| features/README.md | ✅ Atualizado | 2025-12-25 |
+| features/agno-chat-agent.md | ✅ Atualizado | 2025-12-25 |
+| features/authentication-and-authorization.md | ✅ Atualizado | 2025-12-25 |
+| features/backoffice-admin.md | ✅ Atualizado | 2025-12-25 |
+| features/candle-bots.md | ✅ Atualizado | 2025-12-25 |
+| features/circuit-breaker.md | ✅ Atualizado | 2025-12-25 |
+| features/dashboard-analytics.md | ✅ Atualizado | 2025-12-25 |
+| features/dca-bots.md | ✅ Atualizado | 2025-12-25 |
+| features/exchange-credentials.md | ✅ Atualizado | 2025-12-25 |
+| features/payment-webhooks.md | ✅ Atualizado | 2025-12-25 |
+| features/smart-bots.md | ✅ Atualizado | 2025-12-25 |
+| features/subscription-plans.md | ✅ Atualizado | 2025-12-25 |
+| features/trading-contexts.md | ✅ Atualizado | 2025-12-25 |
+
+### Histórico de Versões
 
 | Versão | Data | Mudanças |
 |--------|------|----------|
-| 1.0 | 2024-12-24 | Criação inicial da documentação empresarial completa |
+| 1.0.0 | 2025-12-25 | Reconstrução dos índices de navegação - versão canônica |
 
 ---
 
@@ -213,5 +232,6 @@ Princípios de comunicação, tom amigável/casual, SLA de suporte (24h), estrat
 
 Para atualizações nesta documentação, entre em contato com a equipe de Produto.
 
-**Última atualização**: 2024-12-24
+**Última atualização**: 2025-12-25
+**Versão da Documentação**: 1.0.0
 **Próxima revisão**: Trimestral ou quando houver mudanças significativas no produto/mercado
