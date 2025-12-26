@@ -64,6 +64,7 @@ ADRs (Architecture Decision Records) **JÁ SÃO** explicações de decisões arq
 | **Banco de Dados** | ADR-003 (MongoDB) | Schema design, queries, indexação |
 | **IA/Agentes** | ADR-006 (AGNO) | Implementar agentes, chat, workflows com LLM |
 | **Deprecation** | ADR-007 (TradingConfig) | Evitar usar código deprecated |
+| **Distributed Systems** | ADR-008 (Compensating Transactions) | SmartBot funds, locks, atomicity, auto-recovery |
 
 **Template para Criar Novo ADR**:
 ```markdown
@@ -151,6 +152,7 @@ Um Architecture Decision Record (ADR) documenta uma decisão arquitetural signif
 | [004](004-coprime-intervals.md) | Uso de Intervalos Co-Primos para Workflows | v1.0.0 | ✅ Aceito | 2025-12-25 |
 | [005](005-adapter-pattern-exchanges.md) | Adapter Pattern para Multi-Exchange Support | v1.0.0 | ✅ Aceito | 2025-12-25 |
 | [006](006-agno-framework-ai.md) | Framework AGNO para Agentes de IA | v1.0.0 | ✅ Aceito | 2025-12-25 |
+| [008](008-compensating-transactions.md) | Compensating Transactions for SmartBot Funds Blocking | v1.0.0 | ✅ Aceito | 2025-12-26 |
 
 ### ADRs Depreciados
 
@@ -217,8 +219,9 @@ Proposto | Aceito | Depreciado | Substituído por ADR-YYY
 | 005-adapter-pattern-exchanges.md | ✅ Atualizado | 2025-12-25 |
 | 006-agno-framework-ai.md | ✅ Atualizado | 2025-12-25 |
 | 007-trading-config-deprecated.md | ✅ Atualizado | 2025-12-25 |
+| 008-compensating-transactions.md | ✅ Atualizado | 2025-12-26 |
 
 ---
 
-**Última atualização**: 2025-12-25
+**Última atualização**: 2025-12-26
 **Versão do Índice**: 1.1.0
