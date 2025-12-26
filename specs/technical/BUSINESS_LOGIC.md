@@ -1,19 +1,27 @@
 ---
-spec_version: "1.3.0"
+spec_version: "1.4.0"
 valid_from: "2025-12-25"
 last_updated: "2025-12-25"
-supersedes: "1.2.0"
+supersedes: "1.3.0"
 status: "active"
 category: "technical"
-tags: ['technical', 'business_logic']
+tags: ['technical', 'business_logic', 'fees', 'trading']
+changelog:
+  - version: "1.4.0"
+    date: "2025-12-25"
+    changes: "Adiciona seção 2.1 - Cálculo de Quantidade com Taxas (CRY-85)"
+  - version: "1.3.0"
+    date: "2025-12-25"
+    changes: "Versão anterior"
 ---
 
 # Lógica de Negócio - Crypteras Trading System
 
 :::version_info
-**Versão**: 1.3.0
+**Versão**: 1.4.0
 **Válida desde**: 2025-12-25
 **Status**: Ativa
+**Changelog**: v1.4.0 adiciona cálculo de quantidade com taxas (CRY-85)
 :::
 
 :::intent
@@ -471,6 +479,85 @@ total_blocked = R$ 500    # Ordens pending (aguardando fill)
 
 **Quando `total_blocked` diminui**:
 - Ordem filled ou cancelada → `total_blocked -= order.amount`
+
+#### 2.1. Calcular Quantidade de Ordem com Taxas (CRY-85) - v2.9
+
+**Problema Resolvido**: Workflows calculavam quantidade sem considerar taxas da exchange (maker/taker fee), resultando em `order_value > max_position_size` e 30% de rejeições.
+
+**Método**: `calculate_order_quantity(amount: Decimal, price: Decimal, fee_rate: Decimal) -> Decimal`
+
+**Fórmula de Compra** (Purchase/DCA):
+```python
+# Taker fee (execução imediata)
+fee_rate = exchange.get_trading_fees(symbol)['taker']  # 0.003 (MB) ou 0.001 (Binance)
+quantity = purchase_amount / (competitive_price * (Decimal("1") + fee_rate))
+```
+
+**Exemplo (Mercado Bitcoin 0.3%)**:
+```python
+purchase_amount = R$ 100.00
+competitive_price = R$ 489.282,00
+fee_rate = Decimal("0.003")  # 0.3% taker fee
+
+# ANTES (ERRADO - sem fee):
+quantity_errado = 100 / 489282 = 0.000204 BTC
+order_value_real = 0.000204 * 489282 * 1.003 = R$ 100.33
+→ REJEITADO (100.33 > 100 max_position_size)
+
+# DEPOIS (CORRETO - com fee):
+quantity_correto = 100 / (489282 * 1.003) = 0.000203 BTC
+order_value_real = 0.000203 * 489282 * 1.003 = R$ 99.97
+→ EXECUTADO ✅ (99.97 <= 100 max_position_size)
+```
+
+**Fórmula de Venda** (Sales):
+```python
+# Maker fee (limit order entra no book)
+fee_rate = exchange.get_trading_fees(symbol)['maker']  # 0.003 (MB) ou 0.001 (Binance)
+proceeds = quantity * competitive_price * (Decimal("1") - fee_rate)
+```
+
+**Exemplo (Mercado Bitcoin 0.3%)**:
+```python
+quantity = Decimal("0.001")  # 0.001 BTC
+competitive_price = R$ 500.000,00
+fee_rate = Decimal("0.003")  # 0.3% maker fee
+
+# ANTES (ERRADO - sem fee):
+proceeds_errado = 0.001 * 500000 = R$ 500.00
+total_invested -= 500  # Incorreto (exchange debitou fee)
+→ total_invested negativo (FM#5)
+
+# DEPOIS (CORRETO - com fee):
+proceeds_correto = 0.001 * 500000 * 0.997 = R$ 498.50
+total_invested -= 498.50  # Correto (valor real recebido)
+→ total_invested preciso ✅
+```
+
+**Regras de Aplicação**:
+- ✅ **Purchase/DCA**: Usar **taker fee** (assume execução imediata)
+- ✅ **Sales**: Usar **maker fee** (limit order entra no orderbook)
+- ✅ **SEMPRE Decimal**: NUNCA usar `float` (erro de arredondamento)
+- ✅ **Cache 1h**: Fees consultados via API com cache TTL 1 hora
+- ✅ **Fallback 0.1%**: Se API falhar, usar fee conservador (evita bloqueio)
+
+**Workflows Afetados**:
+- `smart_bot_purchase.py` - Linha 314-315
+- `smart_bot_sales.py` - Cálculo de proceeds
+- `candle_bot_analysis_workflow.py` - Sinais BUY/SELL
+- `dca_bot_execution.py` - Compras periódicas
+
+**Validação Matemática**:
+```python
+# Garantia: order_value <= purchase_amount (sempre)
+order_value = quantity * price * (1 + fee)
+assert order_value <= purchase_amount, "Ordem seria rejeitada"
+```
+
+**Referências**:
+- Issue: [CRY-85](https://linear.app/crypeteras/issue/CRY-85)
+- Código: `backend/src/exchanges/base.py:get_trading_fees()`
+- Docs: `.claude/sessions/cry-85-smartbot-fee-calculation-bug/refined.md`
 
 #### 3. Verificar Stop-Loss
 

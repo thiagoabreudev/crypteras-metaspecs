@@ -1,7 +1,7 @@
 ---
 spec_version: "1.0.0"
 valid_from: "2025-12-25"
-last_updated: "2025-12-25"
+last_updated: "2025-12-26"
 supersedes: null
 status: "active"
 ---
@@ -465,7 +465,7 @@ Resultado: IA confusa, respostas inconsistentes
 
 | Documento | Status | Última Atualização |
 |-----------|--------|-------------------|
-| README.md | ✅ Atualizado | 2025-12-25 |
+| README.md (index.md) | ✅ Atualizado | 2025-12-26 |
 | VERSIONING_POLICY.md | ✅ Atualizado | 2025-12-25 |
 | VERSION_HISTORY.md | ✅ Atualizado | 2025-12-25 |
 | CONTEXT_HIERARCHY.md | ✅ Atualizado | 2025-12-25 |
@@ -475,6 +475,6 @@ Resultado: IA confusa, respostas inconsistentes
 
 ---
 
-**Última atualização**: 2025-12-25
+**Última atualização**: 2025-12-26
 **Versão do Sistema de Governança**: 1.0.0
 **Responsável**: Context Governance Team

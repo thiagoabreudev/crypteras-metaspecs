@@ -1,7 +1,7 @@
 ---
 spec_version: "1.0.0"
 valid_from: "2025-12-25"
-last_updated: "2025-12-25"
+last_updated: "2025-12-26"
 supersedes: null
 status: "active"
 category: "meta"
@@ -129,7 +129,7 @@ Arquitetura, código, APIs, guias de desenvolvimento.
 |---------|-------|
 | Total de specs | 46 arquivos |
 | Cobertura de versionamento | 100% |
-| Última atualização | 2025-12-25 |
+| Última atualização | 2025-12-26 |
 | ADRs ativos | 6 |
 | Features documentadas | 13 |
 | Personas de cliente | 3 |
@@ -221,6 +221,6 @@ Após ler este índice:
 
 ---
 
-**Última Atualização**: 2025-12-25
+**Última Atualização**: 2025-12-26
 **Versão do Índice**: 1.0.0
 **Mantenedor**: Equipe Crypteras

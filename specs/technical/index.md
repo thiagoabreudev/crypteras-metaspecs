@@ -1,7 +1,7 @@
 ---
 spec_version: "1.0.0"
 valid_from: "2025-12-25"
-last_updated: "2025-12-25"
+last_updated: "2025-12-26"
 supersedes: null
 status: "active"
 category: "technical"
@@ -26,7 +26,7 @@ tags: ['technical', 'index']
 
 ### Informações Básicas
 - **Nome do Projeto**: Crypteras Trading System
-- **Versão**: v2.4 (CRY-56: Sistema de Planos FREE/PRO/MAX)
+- **Versão**: v2.9 (CRY-85: Cálculo de Quantidade com Taxas)
 - **Repositório**: `/Users/thiagoabreu/workspace/crypteras-improved`
 - **Stack Principal**: Python 3.x + FastAPI + Nuxt.js 3 + MongoDB + Redis + Celery
 - **Ambiente de Produção**: Docker Swarm (DigitalOcean)
@@ -118,7 +118,7 @@ tags: ['technical', 'index']
 
 | Documento | Status | Última Atualização |
 |-----------|--------|-------------------|
-| index.md | ✅ Atualizado | 2025-12-25 |
+| index.md | ✅ Atualizado | 2025-12-26 |
 | project_charter.md | ✅ Atualizado | 2025-12-25 |
 | adr/README.md | ✅ Atualizado | 2025-12-25 |
 | adr/001-clean-architecture.md | ✅ Atualizado | 2025-12-25 |
@@ -130,7 +130,7 @@ tags: ['technical', 'index']
 | adr/007-trading-config-deprecated.md | ✅ Atualizado | 2025-12-25 |
 | CLAUDE.meta.md | ✅ Atualizado | 2025-12-25 |
 | CODEBASE_GUIDE.md | ✅ Atualizado | 2025-12-25 |
-| BUSINESS_LOGIC.md | ✅ Atualizado | 2025-12-25 |
+| BUSINESS_LOGIC.md | ✅ Atualizado v1.4.0 | 2025-12-25 (CRY-85) |
 | API_SPECIFICATION.md | ✅ Atualizado | 2025-12-25 |
 | CONTRIBUTING.md | ✅ Atualizado | 2025-12-25 |
 | TROUBLESHOOTING.md | ✅ Atualizado | 2025-12-25 |
@@ -138,6 +138,6 @@ tags: ['technical', 'index']
 
 ---
 
-**Última Atualização Geral**: 2025-12-25
+**Última Atualização Geral**: 2025-12-26
 **Versão da Documentação**: 1.0.0
 **Baseado em**: Análise de código real + input da equipe
