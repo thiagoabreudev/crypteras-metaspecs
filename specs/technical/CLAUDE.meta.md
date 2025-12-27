@@ -1,8 +1,8 @@
 ---
-spec_version: "1.5.0"
-valid_from: "2025-12-25"
-last_updated: "2025-12-25"
-supersedes: "1.4.0"
+spec_version: "1.6.0"
+valid_from: "2025-12-27"
+last_updated: "2025-12-27"
+supersedes: "1.5.0"
 status: "active"
 category: "technical"
 tags: ['technical', 'claude.meta']
@@ -11,13 +11,23 @@ tags: ['technical', 'claude.meta']
 # CLAUDE.meta.md - Guia de Desenvolvimento com IA
 
 :::version_info
-**Versão**: 1.5.0
-**Válida desde**: 2025-12-25
+**Versão**: 1.6.0
+**Válida desde**: 2025-12-27
 **Status**: Ativa
 :::
 
 :::breaking_changes
-**v1.5.0**:
+**v1.6.0** (2025-12-27):
+- Adicionados 5 novos failure modes críticos (#11-#15)
+- FM#11: MongoDB Atlas vs Localhost (debug com conexão errada)
+- FM#12: MongoDB Collections (assumir nomes sem verificar)
+- FM#13: Deploy Scripts (execução não autorizada reforçada)
+- FM#14: Frontend Hardcoded URLs (useRuntimeConfig obrigatório)
+- FM#15: AGNO vs API Dashboard (arquitetura de serviços)
+- Total: 15 failure modes documentados
+- Incrementada versão MINOR conforme MetaCerta (adição de conteúdo não-breaking)
+
+**v1.5.0** (2025-12-25):
 - Adicionada referência explícita ao ADR-006 na seção AGNO Framework
 - Melhor rastreabilidade de decisões arquiteturais (ADR > Guide)
 
@@ -144,6 +154,94 @@ tags: ['technical', 'claude.meta']
      - ✅ `<script setup>` com `ref()`, `computed()`, `watch()` (Composition API)
      - ❌ `asyncData()` (Nuxt 2)
      - ✅ `useAsyncData()`, `useFetch()` (Nuxt 3)
+
+11. **MongoDB Atlas vs Localhost - Debug com Conexão Errada**
+   - **Tipo**: integration
+   - **Descrição**: IA tenta debugar conectando em `mongodb://localhost:27017` ao invés de usar `MONGODB_URI` do ambiente (MongoDB Atlas)
+   - **Gatilho**: Debug de dados, verificação de collections, queries manuais
+   - **Impacto**: 🔴 Crítico (debug falha, IA não vê dados reais, decisões baseadas em estado vazio)
+   - **Mitigação**: SEMPRE ler variável de ambiente `MONGODB_URI` antes de conectar. NUNCA assumir localhost. Verificar `.env` ou `backend/.env.prod` para URI correta
+   - **Detecção**: Erro "Connection refused localhost:27017" mas produção está no Atlas. IA reporta "collection vazia" mas dados existem
+   - **Código Correto**:
+     ```python
+     # ✅ CORRETO
+     import os
+     mongo_uri = os.getenv('MONGODB_URI')  # mongodb+srv://...@crypteras.4etwcbo.mongodb.net/...
+     client = AsyncIOMotorClient(mongo_uri)
+
+     # ❌ ERRADO
+     client = AsyncIOMotorClient('mongodb://localhost:27017')  # Ignora variável de ambiente!
+     ```
+
+12. **MongoDB Collections - Assumir Nomes Sem Verificar**
+   - **Tipo**: hallucination
+   - **Descrição**: IA assume nomes de collections (`db.smart_bots`, `db.trading_orders`) sem verificar se existem no banco
+   - **Gatilho**: Queries, agregações, ou debug de dados
+   - **Impacto**: 🟡 Médio (queries falham com "collection not found", debug incorreto)
+   - **Mitigação**: SEMPRE listar collections antes de usar: `await db.list_collection_names()`. Validar nome antes de query
+   - **Detecção**: Erro "collection 'xyz' does not exist" ou query retorna vazio inesperadamente
+   - **Código Correto**:
+     ```python
+     # ✅ CORRETO - Verificar collections existentes
+     collections = await db.list_collection_names()
+     print(f"Collections disponíveis: {collections}")
+
+     if 'smart_bots' in collections:
+         bots = await db.smart_bots.find().to_list(10)
+     else:
+         print("Collection 'smart_bots' não existe!")
+
+     # ❌ ERRADO - Assumir collection existe
+     bots = await db.smart_bots.find().to_list(10)  # Pode falhar!
+     ```
+
+13. **Deploy Scripts - Execução Sem Autorização Explícita**
+   - **Tipo**: security
+   - **Descrição**: IA executa scripts de deploy (`build-deploy.sh`, `deploy.sh`, `docker push`) sem autorização explícita do usuário mesmo quando instruída a NÃO fazer deploy
+   - **Gatilho**: Finalizar implementação de feature, corrigir bug, ou quando usuário pede para "finalizar" ou "está pronto"
+   - **Impacto**: 🔴 Crítico (deploy acidental em produção, downtime, rollback necessário, custos)
+   - **Mitigação**: IA NUNCA deve executar deploy scripts. SEMPRE perguntar explicitamente: "Deseja fazer deploy em produção? (Responda SIM para confirmar)". Apenas criar PR ou commit local
+   - **Detecção**: Revisar comandos executados pela IA. Buscar `bash build-deploy.sh`, `bash deploy.sh`, `git push`, `docker push`
+   - **Constraint Obrigatório**: Deploy é responsabilidade HUMANA ou CI/CD aprovado. IA pode preparar código mas NÃO executar deploy
+
+14. **Frontend - Hardcoded API URLs ao Invés de useRuntimeConfig()**
+   - **Tipo**: hallucination
+   - **Descrição**: IA hardcoda URLs de API (`http://localhost:7777`, `http://localhost:8000`) ao invés de usar `useRuntimeConfig()`
+   - **Gatilho**: Implementar fetch/axios calls no frontend (Vue/Nuxt)
+   - **Impacto**: 🟡 Médio (frontend quebra em produção, URLs erradas)
+   - **Mitigação**: SEMPRE usar `const config = useRuntimeConfig(); config.public.dashboardApiBase`. NUNCA hardcodar URLs
+   - **Detecção**: Buscar `http://localhost` ou `https://` hardcoded em arquivos `.vue`, `.ts`, `.js`
+   - **Código Correto**:
+     ```typescript
+     // ✅ CORRETO - Usar runtime config
+     const config = useRuntimeConfig()
+     const apiUrl = config.public.dashboardApiBase  // Do nuxt.config.ts
+     const response = await fetch(`${apiUrl}/api/smart-bots`)
+
+     // ❌ ERRADO - Hardcoded
+     const response = await fetch('http://localhost:8000/api/smart-bots')  // Quebra em prod!
+     ```
+
+15. **AGNO vs API Dashboard - Frontend Conectando ao Serviço Errado**
+   - **Tipo**: context_clash
+   - **Descrição**: IA conecta frontend ao AGNO (porta 7777) quando deveria conectar à API Dashboard (porta 8000) ou vice-versa
+   - **Gatilho**: Implementar features de CRUD (bots, ordens, usuários) no frontend
+   - **Impacto**: 🟡 Médio (arquitetura quebrada, endpoints não existem, 404 errors)
+   - **Mitigação**: SEMPRE usar API Dashboard (`port 8000`) para CRUD. AGNO (`port 7777`) é APENAS para chat/playground IA
+   - **Detecção**: Frontend faz request para `/playground/*` quando deveria ser `/api/*`. Console mostra 404 para endpoints esperados
+   - **Regra de Arquitetura**:
+     ```
+     Frontend → API Dashboard (8000):
+       - GET/POST/PATCH /api/smart-bots
+       - GET/POST /api/candle-bots
+       - GET /api/dashboard/performance
+       - Autenticação JWT obrigatória
+
+     Frontend → AGNO (7777):
+       - POST /playground/chat (apenas chat com IA)
+       - GET /playground/status
+       - Sem autenticação (público)
+     ```
 :::
 
 :::explainability

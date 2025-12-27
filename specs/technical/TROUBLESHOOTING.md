@@ -1,8 +1,8 @@
 ---
-spec_version: "1.2.0"
-valid_from: "2025-12-25"
-last_updated: "2025-12-25"
-supersedes: "1.1.0"
+spec_version: "1.3.0"
+valid_from: "2025-12-27"
+last_updated: "2025-12-27"
+supersedes: "1.2.0"
 status: "active"
 category: "technical"
 tags: ['technical', 'troubleshooting']
@@ -11,8 +11,8 @@ tags: ['technical', 'troubleshooting']
 # Guia de Solução de Problemas - Crypteras Trading System
 
 :::version_info
-**Versão**: 1.2.0
-**Válida desde**: 2025-12-25
+**Versão**: 1.3.0
+**Válida desde**: 2025-12-27
 **Status**: Ativa
 :::
 
@@ -90,10 +90,64 @@ tags: ['technical', 'troubleshooting']
    - **Mitigação**: Verificar se workflow `smart_bot_check_situation` está chamando `adjust_trailing_stop()`. Validar `trailing_stop_percentage` configurado
    - **Detecção**: Preço subiu 5%+ mas `base_price` continua igual. `trailing_stop_adjusted_at` não atualiza
    - **Debug**: Adicionar log em `adjust_trailing_stop()` mostrando `current_price`, `base_price`, `variation`
+
+6. **MongoDB Debug - IA Conecta em Localhost ao Invés de Atlas**
+   - **Tipo**: integration
+   - **Descrição**: IA tenta debugar dados conectando em `mongodb://localhost:27017` ao invés de ler `MONGODB_URI` do ambiente (MongoDB Atlas)
+   - **Gatilho**: Debug de collections, verificação de dados, queries manuais
+   - **Impacto**: 🔴 Crítico (debug falha completamente, IA não vê dados reais, decisões baseadas em estado vazio/incorreto)
+   - **Mitigação**: SEMPRE verificar variável de ambiente PRIMEIRO. Ler `MONGODB_URI` de `.env` ou `backend/.env.prod`. NUNCA assumir localhost
+   - **Detecção**: Erro "Connection refused localhost:27017" mas produção usa Atlas. IA reporta "collection vazia" mas dados existem
+   - **Solução**:
+     ```bash
+     # 1. Verificar URI correto
+     cat backend/.env.prod | grep MONGODB_URI
+     # mongodb+srv://admin:***@crypteras.4etwcbo.mongodb.net/crypteras_trading...
+
+     # 2. Conectar com URI correto
+     python
+     >>> import os
+     >>> from motor.motor_asyncio import AsyncIOMotorClient
+     >>> mongo_uri = os.getenv('MONGODB_URI') or 'mongodb+srv://...'
+     >>> client = AsyncIOMotorClient(mongo_uri)
+     >>> db = client.crypteras_trading
+     >>> await db.list_collection_names()
+     ```
+
+7. **MongoDB Collections - Queries Falham por Nome Incorreto**
+   - **Tipo**: hallucination
+   - **Descrição**: IA assume nomes de collections (`db.smart_bots`, `db.trading_orders`) sem verificar se existem
+   - **Gatilho**: Queries, agregações, debug de dados
+   - **Impacto**: 🟡 Médio (queries retornam vazio, erros "collection not found", debug incorreto)
+   - **Mitigação**: SEMPRE listar collections primeiro: `await db.list_collection_names()`. Validar antes de usar
+   - **Detecção**: Query retorna vazio inesperadamente. Erro "collection 'xyz' does not exist"
+   - **Solução**:
+     ```bash
+     # 1. Listar collections existentes
+     python backend/scripts/list_collections.py
+     # ou
+     docker exec -it crypteras-mongo mongosh "mongodb+srv://..." --eval "db.getCollectionNames()"
+
+     # 2. Usar collection correta em queries
+     collections = await db.list_collection_names()
+     print(f"Collections disponíveis: {collections}")
+     # ['users', 'smart_bots', 'candle_bots', 'orders', ...]
+
+     if 'smart_bots' in collections:
+         bots = await db.smart_bots.find().to_list(10)
+     ```
 :::
 
 :::breaking_changes
-**v1.2.0**:
+**v1.3.0** (2025-12-27):
+- Adicionados 2 novos failure modes operacionais (#6-#7)
+- FM#6: MongoDB Debug (IA conecta em localhost ao invés de Atlas)
+- FM#7: MongoDB Collections (queries falham por nome incorreto)
+- Total: 7 failure modes operacionais documentados
+- Incluídas soluções práticas com comandos bash/python
+- Incrementada versão MINOR conforme MetaCerta (adição de conteúdo não-breaking)
+
+**v1.2.0** (2025-12-25):
 - Adicionada seção `:::failure_modes` com 5 falhas operacionais conhecidas
 - Documentadas falhas reais: Validações hardcoded, Exchange credentials erradas, Fundos disponíveis incorretos, Stop-loss não dispara, Trailing stop não ajusta
 - Incrementada versão MINOR conforme MetaCerta (adição de conteúdo não-breaking)

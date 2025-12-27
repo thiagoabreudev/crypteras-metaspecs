@@ -1,8 +1,8 @@
 ---
-spec_version: "1.3.0"
-valid_from: "2025-12-25"
-last_updated: "2025-12-25"
-supersedes: "1.2.0"
+spec_version: "1.4.0"
+valid_from: "2025-12-27"
+last_updated: "2025-12-27"
+supersedes: "1.3.0"
 status: "active"
 category: "technical"
 tags: ['technical', 'api_specification']
@@ -11,8 +11,8 @@ tags: ['technical', 'api_specification']
 # API Specification - Crypteras Trading System
 
 :::version_info
-**Versão**: 1.3.0
-**Válida desde**: 2025-12-25
+**Versão**: 1.4.0
+**Válida desde**: 2025-12-27
 **Status**: Ativa
 :::
 
@@ -166,6 +166,52 @@ tags: ['technical', 'api_specification']
      )
      ```
    - **Detecção**: Browser console mostra "Access-Control-Allow-Origin" error. Request funciona no curl mas falha no browser
+
+7. **Frontend - Hardcoded API URLs ao Invés de Variáveis de Ambiente**
+   - **Tipo**: hallucination
+   - **Descrição**: IA hardcoda URLs de API no frontend (`http://localhost:7777`, `http://localhost:8000`) ao invés de usar `useRuntimeConfig()` (Nuxt) ou variáveis de ambiente
+   - **Gatilho**: Implementar fetch/axios calls em componentes Vue, composables, ou páginas
+   - **Impacto**: 🟡 Médio (frontend quebra em produção, requests vão para localhost ao invés de API de produção)
+   - **Mitigação**: SEMPRE usar `useRuntimeConfig()` para URLs de API. NUNCA hardcodar URLs
+   - **Detecção**: Buscar `http://localhost` ou `https://api` hardcoded em arquivos `.vue`, `.ts`, `.js`
+   - **Código Correto (Frontend Nuxt 3)**:
+     ```typescript
+     // ✅ CORRETO - Usar runtime config
+     const config = useRuntimeConfig()
+     const apiUrl = config.public.dashboardApiBase  // Do nuxt.config.ts
+     const response = await fetch(`${apiUrl}/api/smart-bots`)
+
+     // nuxt.config.ts
+     export default defineNuxtConfig({
+       runtimeConfig: {
+         public: {
+           dashboardApiBase: process.env.DASHBOARD_API_BASE || 'http://localhost:8000',
+           agnoApiBase: process.env.AGNO_API_BASE || 'http://localhost:7777'
+         }
+       }
+     })
+
+     // ❌ ERRADO - Hardcoded
+     const response = await fetch('http://localhost:8000/api/smart-bots')  // Quebra em prod!
+     ```
+   - **Código Correto (Backend FastAPI)**:
+     ```python
+     # ✅ CORRETO - Usar Pydantic Settings
+     from pydantic_settings import BaseSettings
+
+     class Settings(BaseSettings):
+         mongodb_uri: str
+         dashboard_api_base: str
+
+         class Config:
+             env_file = ".env"
+
+     settings = Settings()
+     mongo_client = AsyncIOMotorClient(settings.mongodb_uri)
+
+     # ❌ ERRADO - Hardcoded
+     mongo_client = AsyncIOMotorClient('mongodb://localhost:27017')  # Quebra em prod!
+     ```
 :::
 
 :::explainability
@@ -284,7 +330,13 @@ IA DEVE explicar decisões de API seguindo este formato:
 :::
 
 :::breaking_changes
-**v1.3.0**:
+**v1.4.0** (2025-12-27):
+- Adicionado novo failure mode #7: Frontend Hardcoded API URLs
+- Documentado padrão correto para useRuntimeConfig() (Nuxt 3) e Pydantic Settings (FastAPI)
+- Total: 7 failure modes documentados
+- Incrementada versão MINOR conforme MetaCerta (adição de conteúdo não-breaking)
+
+**v1.3.0** (2025-12-25):
 - Adicionada seção `:::explainability` com requisitos obrigatórios para decisões de API
 - Definidos 10 gatilhos obrigatórios de explainability para contratos de API
 - Incluído exemplo completo de explicação de decisão de paginação
