@@ -1,8 +1,8 @@
 ---
-spec_version: "1.1.0"
-valid_from: "2025-12-25"
-last_updated: "2025-12-25"
-supersedes: null
+spec_version: "1.1.1"
+valid_from: "2025-12-31"
+last_updated: "2025-12-31"
+supersedes: "1.1.0"
 status: "active"
 category: "technical"
 tags: ['technical', 'project_charter']
@@ -11,9 +11,23 @@ tags: ['technical', 'project_charter']
 # Carta do Projeto - Crypteras Trading System
 
 :::version_info
-**Versão**: 1.1.0
-**Válida desde**: 2025-12-25
+**Versão**: 1.1.1
+**Válida desde**: 2025-12-31
 **Status**: Ativa
+:::
+
+:::breaking_changes
+**v1.1.1** (2025-12-31):
+- Adicionado desenvolvedor Alam Moraes à equipe de desenvolvimento
+- Incrementada versão PATCH conforme MetaCerta (adição menor não-breaking)
+
+**v1.1.0** (2025-12-25):
+- Adicionada seção Intent as Code
+- Incrementada versão MINOR conforme MetaCerta
+
+**v1.0.0** (baseline):
+- Primeira versão versionada desta spec
+- Charter do projeto e objetivos
 :::
 
 :::intent
@@ -31,15 +45,6 @@ tags: ['technical', 'project_charter']
 - Comprometer com deadlines impossíveis
 :::
 
-:::breaking_changes
-**v1.1.0**:
-- Adicionada seção Intent as Code
-- Incrementada versão MINOR conforme MetaCerta
-
-**v1.0.0** (baseline):
-- Primeira versão versionada desta spec
-- Charter do projeto e objetivos
-:::
 
 ## 1. Visão do Projeto
 
@@ -214,6 +219,9 @@ Este projeto é uma **reescrita completa** de um sistema legado desenvolvido em 
 ### Stakeholders Principais
 
 #### Equipe de Desenvolvimento
+- **Membros**:
+  - Thiago Abreu (Lead Developer)
+  - Alam Moraes (Developer)
 - **Papel**: Implementação, manutenção, evolução do sistema
 - **Interesse**: Código limpo, arquitetura escalável, debugging eficiente
 - **Prioridades**:
@@ -468,7 +476,9 @@ Este projeto é uma **reescrita completa** de um sistema legado desenvolvido em 
 
 | Versão | Data | Autor | Mudanças |
 |--------|------|-------|----------|
-| 1.0 | 2024-12-24 | AI + Equipe | Versão inicial baseada em análise de código |
+| 1.1.1 | 2025-12-31 | Thiago Abreu | Adicionado desenvolvedor Alam Moraes à equipe |
+| 1.1.0 | 2025-12-25 | AI + Equipe | Adicionada seção Intent as Code |
+| 1.0.0 | 2024-12-24 | AI + Equipe | Versão inicial baseada em análise de código |
 
 ### Próxima Revisão
 **Data Programada**: 2025-03-01 (Q1 review)
