@@ -1,22 +1,30 @@
 ---
-spec_version: "1.6.0"
-valid_from: "2025-12-27"
-last_updated: "2025-12-27"
-supersedes: "1.5.0"
+spec_version: "1.7.0"
+valid_from: "2026-01-06"
+last_updated: "2026-01-06"
+supersedes: "1.6.0"
 status: "active"
 category: "technical"
-tags: ['technical', 'claude.meta']
+tags: ['technical', 'claude.meta', 'infrastructure', 'debug']
 ---
 
 # CLAUDE.meta.md - Guia de Desenvolvimento com IA
 
 :::version_info
-**Versão**: 1.6.0
-**Válida desde**: 2025-12-27
+**Versão**: 1.7.0
+**Válida desde**: 2026-01-06
 **Status**: Ativa
 :::
 
 :::breaking_changes
+**v1.7.0** (2026-01-06):
+- Adicionada seção "🔧 Infraestrutura e Debug" com informações críticas de produção
+- Documentado IP correto do servidor (188.166.146.143)
+- Documentado nome correto do banco (crypteras_trading)
+- Adicionado checklist de debug para produção
+- Atualizado FM#11 com comandos Docker para verificar variáveis de ambiente
+- Incrementada versão MINOR conforme MetaCerta (adição de conteúdo crítico não-breaking)
+
 **v1.6.0** (2025-12-27):
 - Adicionados 5 novos failure modes críticos (#11-#15)
 - FM#11: MongoDB Atlas vs Localhost (debug com conexão errada)
@@ -160,17 +168,24 @@ tags: ['technical', 'claude.meta']
    - **Descrição**: IA tenta debugar conectando em `mongodb://localhost:27017` ao invés de usar `MONGODB_URI` do ambiente (MongoDB Atlas)
    - **Gatilho**: Debug de dados, verificação de collections, queries manuais
    - **Impacto**: 🔴 Crítico (debug falha, IA não vê dados reais, decisões baseadas em estado vazio)
-   - **Mitigação**: SEMPRE ler variável de ambiente `MONGODB_URI` antes de conectar. NUNCA assumir localhost. Verificar `.env` ou `backend/.env.prod` para URI correta
+   - **Mitigação**:
+     - SEMPRE ler variável de ambiente do container Docker: `docker service inspect crypteras_agno --format='{{json .Spec.TaskTemplate.ContainerSpec.Env}}'`
+     - NUNCA assumir localhost
+     - Banco está no **MongoDB Atlas** (não local)
+     - Nome do banco: **`crypteras_trading`** (não `crypteras` ou `trading`)
    - **Detecção**: Erro "Connection refused localhost:27017" mas produção está no Atlas. IA reporta "collection vazia" mas dados existem
    - **Código Correto**:
      ```python
-     # ✅ CORRETO
+     # ✅ CORRETO - Verificar env do container primeiro
+     # docker service inspect crypteras_agno --format='{{json .Spec.TaskTemplate.ContainerSpec.Env}}'
      import os
-     mongo_uri = os.getenv('MONGODB_URI')  # mongodb+srv://...@crypteras.4etwcbo.mongodb.net/...
+     mongo_uri = os.getenv('MONGODB_URI')  # mongodb+srv://...@crypteras.4etwcbo.mongodb.net/crypteras_trading
      client = AsyncIOMotorClient(mongo_uri)
+     db = client.crypteras_trading  # Nome correto do banco
 
      # ❌ ERRADO
-     client = AsyncIOMotorClient('mongodb://localhost:27017')  # Ignora variável de ambiente!
+     client = AsyncIOMotorClient('mongodb://localhost:27017')  # Ignora MongoDB Atlas!
+     db = client.crypteras  # Nome do banco errado!
      ```
 
 12. **MongoDB Collections - Assumir Nomes Sem Verificar**
@@ -379,6 +394,76 @@ Sistema de trading automatizado de criptomoedas usando **Clean Architecture**, *
 **Repositório Real**: `/Users/thiagoabreu/workspace/crypteras-improved`
 **Stack**: Python 3.x + FastAPI + Nuxt.js 3 + MongoDB + Redis + Celery
 **Deploy**: Docker Swarm (DigitalOcean)
+
+---
+
+## 🔧 Infraestrutura e Debug
+
+### Servidor de Produção
+
+**⚠️ INFORMAÇÕES CRÍTICAS**:
+- **IP do Servidor**: `188.166.146.143`
+- **Acesso SSH**: `ssh root@188.166.146.143`
+- **NÃO** usar outros IPs ou localhost para debug de produção
+
+### Banco de Dados
+
+**⚠️ CONFIGURAÇÃO CRÍTICA**:
+- **Tipo**: MongoDB Atlas (cloud-hosted)
+- **Nome do Banco**: `crypteras_trading`
+- **NÃO** está em localhost (`mongodb://localhost:27017`)
+- **NÃO** é `crypteras` ou `trading` (é `crypteras_trading`)
+
+**Como Verificar URI de Conexão**:
+```bash
+# 1. Listar serviços Docker
+docker service ls
+
+# 2. Inspecionar variáveis de ambiente do container
+docker service inspect crypteras_agno --format='{{json .Spec.TaskTemplate.ContainerSpec.Env}}'
+
+# 3. Procurar por MONGODB_URI (deve apontar para MongoDB Atlas)
+# Exemplo: mongodb+srv://user:pass@crypteras.4etwcbo.mongodb.net/crypteras_trading
+```
+
+**Exemplo de Conexão Correta**:
+```python
+import os
+from motor.motor_asyncio import AsyncIOMotorClient
+
+# ✅ CORRETO - Ler do ambiente
+mongo_uri = os.getenv('MONGODB_URI')  # MongoDB Atlas URI
+client = AsyncIOMotorClient(mongo_uri)
+db = client.crypteras_trading  # Nome correto!
+
+# ❌ ERRADO - Hardcoded
+client = AsyncIOMotorClient('mongodb://localhost:27017')
+db = client.crypteras  # Nome errado!
+```
+
+### Checklist de Debug
+
+**Antes de Debugar Produção**:
+- [ ] Conectado ao servidor correto? (`ssh root@188.166.146.143`)
+- [ ] Variáveis de ambiente verificadas? (`docker service inspect crypteras_agno`)
+- [ ] URI do MongoDB Atlas confirmada? (não `localhost:27017`)
+- [ ] Nome do banco correto? (`crypteras_trading`)
+- [ ] Collections listadas? (`await db.list_collection_names()`)
+
+**Comandos Úteis de Debug**:
+```bash
+# Ver logs do serviço AGNO
+docker service logs crypteras_agno --tail 100 --follow
+
+# Ver logs do serviço API Dashboard
+docker service logs crypteras_dashboard --tail 100 --follow
+
+# Listar containers rodando
+docker ps
+
+# Executar comando dentro do container
+docker exec -it <container_id> bash
+```
 
 ---
 
