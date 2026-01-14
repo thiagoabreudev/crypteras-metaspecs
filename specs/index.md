@@ -1,7 +1,7 @@
 ---
 spec_version: "1.0.0"
 valid_from: "2025-12-25"
-last_updated: "2025-12-26"
+last_updated: "2026-01-14"
 supersedes: null
 status: "active"
 category: "meta"
@@ -95,7 +95,7 @@ Arquitetura, código, APIs, guias de desenvolvimento.
 - [Solução de Problemas](technical/TROUBLESHOOTING.md) - Debugging
 - [Desafios Arquiteturais](technical/ARCHITECTURE_CHALLENGES.md) - Débito técnico
 
-**Subpasta**: [ADRs (Architecture Decision Records)](technical/adr/index.md) - 7 decisões arquiteturais
+**Subpasta**: [ADRs (Architecture Decision Records)](technical/adr/index.md) - 8 decisões arquiteturais
 
 **Quando usar**: Desenvolvimento, debugging, code review, arquitetura
 
@@ -127,10 +127,11 @@ Arquitetura, código, APIs, guias de desenvolvimento.
 
 | Métrica | Valor |
 |---------|-------|
-| Total de specs | 46 arquivos |
+| Total de specs | 51 arquivos |
 | Cobertura de versionamento | 100% |
-| Última atualização | 2025-12-26 |
-| ADRs ativos | 6 |
+| Última atualização | 2026-01-14 |
+| ADRs ativos | 7 |
+| ADRs deprecados | 1 |
 | Features documentadas | 13 |
 | Personas de cliente | 3 |
 
@@ -221,6 +222,6 @@ Após ler este índice:
 
 ---
 
-**Última Atualização**: 2025-12-26
-**Versão do Índice**: 1.0.0
+**Última Atualização**: 2026-01-14
+**Versão do Índice**: 1.1.0
 **Mantenedor**: Equipe Crypteras

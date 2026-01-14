@@ -12,7 +12,7 @@ tags: ['readme', 'technical', 'decision', 'architecture']
 
 spec_version: "1.1.0"
 valid_from: "2025-12-25"
-last_updated: "2025-12-25"
+last_updated: "2026-01-14"
 supersedes: "1.0.0"
 ---
 
@@ -151,6 +151,7 @@ Um Architecture Decision Record (ADR) documenta uma decisão arquitetural signif
 | [004](004-coprime-intervals.md) | Uso de Intervalos Co-Primos para Workflows | v1.0.0 | ✅ Aceito | 2025-12-25 |
 | [005](005-adapter-pattern-exchanges.md) | Adapter Pattern para Multi-Exchange Support | v1.0.0 | ✅ Aceito | 2025-12-25 |
 | [006](006-agno-framework-ai.md) | Framework AGNO para Agentes de IA | v1.0.0 | ✅ Aceito | 2025-12-25 |
+| [008](008-compensating-transactions.md) | Compensating Transactions para SmartBot Funds | v1.0.0 | ✅ Aceito | 2025-12-26 |
 
 ### ADRs Depreciados
 
@@ -209,7 +210,7 @@ Proposto | Aceito | Depreciado | Substituído por ADR-YYY
 
 | Documento | Status | Última Atualização |
 |-----------|--------|-------------------|
-| README.md | ✅ Atualizado | 2025-12-25 |
+| README.md (index.md) | ✅ Atualizado | 2026-01-14 |
 | 001-clean-architecture.md | ✅ Atualizado | 2025-12-25 |
 | 002-celery-redis-migration.md | ✅ Atualizado | 2025-12-25 |
 | 003-mongodb-over-postgresql.md | ✅ Atualizado | 2025-12-25 |
@@ -217,8 +218,9 @@ Proposto | Aceito | Depreciado | Substituído por ADR-YYY
 | 005-adapter-pattern-exchanges.md | ✅ Atualizado | 2025-12-25 |
 | 006-agno-framework-ai.md | ✅ Atualizado | 2025-12-25 |
 | 007-trading-config-deprecated.md | ✅ Atualizado | 2025-12-25 |
+| 008-compensating-transactions.md | ✅ Novo | 2025-12-26 |
 
 ---
 
-**Última atualização**: 2025-12-25
-**Versão do Índice**: 1.1.0
+**Última atualização**: 2026-01-14
+**Versão do Índice**: 1.2.0

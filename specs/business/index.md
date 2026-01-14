@@ -1,7 +1,7 @@
 ---
 spec_version: "1.0.0"
 valid_from: "2025-12-25"
-last_updated: "2025-12-26"
+last_updated: "2026-01-14"
 supersedes: null
 status: "active"
 category: "business"
@@ -197,7 +197,7 @@ Princípios de comunicação, tom amigável/casual, SLA de suporte (24h), estrat
 
 | Documento | Status | Última Atualização |
 |-----------|--------|-------------------|
-| index.md | ✅ Atualizado | 2025-12-26 |
+| index.md | ✅ Atualizado | 2026-01-14 |
 | README.md | ✅ Atualizado | 2025-12-25 |
 | CUSTOMER_PERSONAS.md | ✅ Atualizado | 2025-12-25 |
 | CUSTOMER_JOURNEY.md | ✅ Atualizado | 2025-12-25 |
@@ -232,6 +232,6 @@ Princípios de comunicação, tom amigável/casual, SLA de suporte (24h), estrat
 
 Para atualizações nesta documentação, entre em contato com a equipe de Produto.
 
-**Última atualização**: 2025-12-26
-**Versão da Documentação**: 1.0.0
+**Última atualização**: 2026-01-14
+**Versão da Documentação**: 1.1.0
 **Próxima revisão**: Trimestral ou quando houver mudanças significativas no produto/mercado

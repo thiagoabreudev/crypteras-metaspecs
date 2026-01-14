@@ -1,7 +1,7 @@
 ---
 spec_version: "1.0.0"
 valid_from: "2025-12-25"
-last_updated: "2025-12-26"
+last_updated: "2026-01-14"
 supersedes: null
 status: "active"
 category: "technical"
@@ -61,6 +61,12 @@ tags: ['technical', 'index']
 - [Guia de Desenvolvimento com IA](CLAUDE.meta.md) - v1.0.0 - Padrões de código, testes, pegadinhas comuns
 - [Guia de Navegação da Base de Código](CODEBASE_GUIDE.md) - v1.0.0 - Estrutura, arquivos chave, fluxos de dados
 
+### 📋 Metadados de Contexto para IA
+- [Índice Meta](meta/index.md) - Visão geral dos metadados de contexto
+- [meta/intent.md](meta/intent.md) - Goals, Constraints e Non-Goals do desenvolvimento
+- [meta/stack.md](meta/stack.md) - Stack tecnológica aprovada e ADRs chave
+- [meta/failures.md](meta/failures.md) - Failure modes e anti-patterns conhecidos
+
 ---
 
 ## Camada 3: Contexto Específico do Domínio
@@ -118,7 +124,7 @@ tags: ['technical', 'index']
 
 | Documento | Status | Última Atualização |
 |-----------|--------|-------------------|
-| index.md | ✅ Atualizado | 2025-12-26 |
+| index.md | ✅ Atualizado | 2026-01-14 |
 | project_charter.md | ✅ Atualizado | 2025-12-25 |
 | adr/README.md | ✅ Atualizado | 2025-12-25 |
 | adr/001-clean-architecture.md | ✅ Atualizado | 2025-12-25 |
@@ -128,6 +134,7 @@ tags: ['technical', 'index']
 | adr/005-adapter-pattern-exchanges.md | ✅ Atualizado | 2025-12-25 |
 | adr/006-agno-framework-ai.md | ✅ Atualizado | 2025-12-25 |
 | adr/007-trading-config-deprecated.md | ✅ Atualizado | 2025-12-25 |
+| adr/008-compensating-transactions.md | ✅ Novo | 2025-12-26 |
 | CLAUDE.meta.md | ✅ Atualizado | 2025-12-25 |
 | CODEBASE_GUIDE.md | ✅ Atualizado | 2025-12-25 |
 | BUSINESS_LOGIC.md | ✅ Atualizado v1.4.0 | 2025-12-25 (CRY-85) |
@@ -135,9 +142,13 @@ tags: ['technical', 'index']
 | CONTRIBUTING.md | ✅ Atualizado | 2025-12-25 |
 | TROUBLESHOOTING.md | ✅ Atualizado | 2025-12-25 |
 | ARCHITECTURE_CHALLENGES.md | ✅ Atualizado | 2025-12-25 |
+| meta/index.md | ✅ Novo | 2026-01-14 |
+| meta/intent.md | ✅ Novo | 2026-01-14 |
+| meta/stack.md | ✅ Novo | 2026-01-14 |
+| meta/failures.md | ✅ Novo | 2026-01-14 |
 
 ---
 
-**Última Atualização Geral**: 2025-12-26
-**Versão da Documentação**: 1.0.0
+**Última Atualização Geral**: 2026-01-14
+**Versão da Documentação**: 1.1.0
 **Baseado em**: Análise de código real + input da equipe

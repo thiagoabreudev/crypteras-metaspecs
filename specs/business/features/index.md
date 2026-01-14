@@ -1,7 +1,7 @@
 ---
 spec_version: "1.0.0"
 valid_from: "2025-12-25"
-last_updated: "2025-12-25"
+last_updated: "2026-01-14"
 status: "active"
 priority: "high"
 category: "feature"
@@ -819,7 +819,7 @@ CELERY_RESULT_BACKEND=redis://redis:6379/1
 
 | Documento | Status | Última Atualização |
 |-----------|--------|-------------------|
-| README.md | ✅ Atualizado | 2025-12-25 |
+| README.md (index.md) | ✅ Atualizado | 2026-01-14 |
 | agno-chat-agent.md | ✅ Atualizado | 2025-12-25 |
 | authentication-and-authorization.md | ✅ Atualizado | 2025-12-25 |
 | backoffice-admin.md | ✅ Atualizado | 2025-12-25 |
@@ -835,5 +835,5 @@ CELERY_RESULT_BACKEND=redis://redis:6379/1
 
 ---
 
-**Última Atualização**: 2025-12-25
-**Versão**: 1.0.0
+**Última Atualização**: 2026-01-14
+**Versão**: 1.1.0
